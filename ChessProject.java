@@ -140,7 +140,20 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		}		
 		return oponent;
 	}	
- 
+
+	private Boolean checkBlackOponent(int newX, int newY){
+		Boolean oponent;
+		Component c2 = chessBoard.findComponentAt(newX, newY);
+		JLabel awaitingPiece = (JLabel)c2;
+		String tmp2 = awaitingPiece.getIcon().toString();			
+		if(((tmp2.contains("White")))){
+			oponent = true;
+		}
+		else{
+			oponent = false; 
+		}		
+		return oponent;
+	}	
 	/*
 		This method is called when we press the Mouse. So we need to find out what piece we have 
 		selected. We may also not have selected a piece!
@@ -181,6 +194,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		String tmp = chessPiece.getIcon().toString();
 		String pieceName = tmp.substring(0, (tmp.length()-4));
 		Boolean validMove = false;
+		int landingX = (e.getX()/75);
+		int landingY = (e.getY()/75);
+		int xMovement = Math.abs((e.getX()/75)-startX);
+		int yMovement = Math.abs((e.getY()/75)-startY);
 
 		/*
 			The only piece that has been enabled to move is a White Pawn...but we should really have this is a separate
@@ -193,17 +210,75 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			If a Pawn makes it to the top of the other side, the Pawn can turn into any other piece, for 
 			demonstration purposes the Pawn here turns into a Queen.
 		*/
-		if(pieceName.equals("WhitePawn")){
+		if(pieceName.equals("BlackQueen")){
+			validMove = true;
+		}
+		else if(pieceName.equals("BlackPawn")){
+			if(startY == 6){ //making its first move
+				if(((yMovement == 1) || (yMovement == 2)) && (startY > landingY) && (xMovement == 0)){
+					//Move upwards if moving one or two squares.
+					//validMove = true;
+					if(yMovement == 2){
+						if((!piecePresent(e.getX(), e.getY())) && (!piecePresent(e.getX(), e.getY()+75))){
+							validMove = true;
+						}
+					}
+					else{
+						if(!piecePresent(e.getX(), e.getY())){
+							validMove = true;
+						}
+					}
+				}
+				//Taking pieces.
+				else if((yMovement == 1) && (startY > landingY) && (xMovement == 1)){
+					if(piecePresent(e.getX(), e.getY())){
+						if(checkBlackOponent(e.getX(), e.getY())){
+							validMove = true;
+						}
+					}
+				}
+			}
+			else{ //where the pawn is making all of the other moves. Moving up the board.
+				if((yMovement == 1) && (startY > landingY) && (xMovement == 0)){
+					if(!piecePresent(e.getX(), e.getY())){
+						validMove = true;
+						//Turn the pawn into a Queen.
+					}
+				}
+				//Taking other pieces.
+				else if((yMovement == 1) && (startY > landingY) && (xMovement == 1)){
+					if(piecePresent(e.getX(), e.getY())){
+						if(checkBlackOponent(e.getX(), e.getY())){
+							validMove = true;
+						}
+					}
+				}
+				//validMove = false;
+			}
+		}
+		else if(pieceName.equals("WhitePawn")){
 			if(startY == 1)
 			{
 				if((startX == (e.getX()/75))&&((((e.getY()/75)-startY)==1)||((e.getY()/75)-startY)==2))
 				{
 					if((((e.getY()/75)-startY)==2)){
-						if((!piecePresent(e.getX(), (e.getY())))&&(!piecePresent(e.getX(), (e.getY()+75)))){
-							validMove = true;					
+						if((piecePresent(e.getX(), (e.getY())))&&(piecePresent(e.getX(), (e.getY()+75)))){
+							validMove = false;
+							System.out.println("If statement 1");
+						}
+						else if((piecePresent(e.getX(), (e.getY()-75)))&&(piecePresent(e.getX(), (e.getY()-75)))){
+							validMove = false;
+							System.out.println("If statement 2");
 						}
 						else{
-							validMove = false;
+							if((piecePresent(e.getX(), (e.getY()+75)))&&(piecePresent(e.getX(), (e.getY()+75)))){
+								validMove = true;
+								System.out.println("if statement 3");
+							}
+							else{
+								validMove = true;
+								System.out.println("if statement 4");
+							}
 						}							
 					}
 					else{
@@ -302,10 +377,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	    		chessPiece.setVisible(true);									
 			}
 		}
-		int landingX = (e.getX()/75);
-		int landingY = (e.getY()/75);
-		int xMovement = Math.abs((e.getX()/75)-startX);
-		int yMovement = Math.abs((e.getY()/75)-startY);
 		System.out.println("-----------------------------");
 		System.out.println("The piece that is being moved is : "+pieceName);
 		System.out.println("The Starting coordinates are : "+"( "+startX+","+startY+")");
