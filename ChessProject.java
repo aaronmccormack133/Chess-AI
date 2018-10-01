@@ -214,12 +214,14 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		if(pieceName.equals("BlackQueen")){
 			validMove = true;
 		}
+		//Bishop movements
+		//Note: Bishup is spelt wrong in the code. All pre-written code is Bishup, not bishop. My code is Bishop.
+		//Completed.
 		if(pieceName.contains("Bishup")){
 			Boolean bishopBlocked = false;
 			int distance = Math.abs(startX - landingX);
 			if(((landingX < 0) || (landingX > 7)) || ((landingY < 0) || (landingY > 7))){
 				validMove = false;
-				System.out.println("Print");
 			}
 			else{
 				validMove = true;
@@ -228,7 +230,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 						for(int i = 0; i < distance; i++){
 							if(piecePresent((initialX + (i * 75)), (initialY + (i * 75)))){
 								bishopBlocked = true;
-								System.out.println("first if");
 							}
 						}
 					}
@@ -236,7 +237,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 						for(int i = 0; i < distance; i++){
 							if(piecePresent((initialX + (i * 75)), (initialY - (i * 75)))){
 								bishopBlocked = true;
-								System.out.println("second if");
 							}
 						}
 					}
@@ -244,7 +244,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 						for(int i = 0; i < distance; i++){
 							if(piecePresent((initialX - (i * 75)), (initialY - (i * 75)))){
 								bishopBlocked = true;
-								System.out.println("third if");
 							}
 						}
 					}
@@ -252,7 +251,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 						for(int i = 0; i < distance; i++){
 							if(piecePresent((initialX - (i * 75)), (initialY + (i * 75)))){
 								bishopBlocked = true;
-								System.out.println("fourth if");
 							}
 						}
 					}
@@ -265,33 +263,120 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 							if(pieceName.contains("White")){
 								if(checkWhiteOponent(e.getX(), e.getY())){
 									validMove = true;
-									System.out.println("white opp if true");
 								}
 								else{
 									validMove = false;
-									System.out.println("white opp false if");
 								}
 							}
 							else{
 								if(checkBlackOponent(e.getX(), e.getY())){
 									validMove = true;
-									System.out.println("Black opp if true");
 								}
 								else{
 									validMove = false;
-									System.out.println("Bl;ack opp if false");
 								}
 							}
 						}
 						else{
 							validMove = true;
-							System.out.println("Second last if");
 						}
 					}
 				}
 				else{
 					validMove = false;
-					System.out.println("last if");
+				}
+			}
+		}
+
+		//Rook Movements
+		//Completed
+		if(pieceName.contains("Rook")){
+			Boolean rookBlocked = false;
+			if(((landingX < 0) || (landingX > 7)) || ((landingY < 0) || (landingY > 7))){
+				validMove = false;
+			}
+			else{
+				if(((Math.abs(startX - landingX) != 0) && (Math.abs(startY - landingY) == 0)) || ((Math.abs(startX - landingX) == 0) && (Math.abs(landingY - startY) != 0))){
+					if(Math.abs(startX - landingX) != 0){
+						int xMovementTemp = Math.abs(startX - landingX);
+						if(startX - landingX > 0){
+							for(int i = 0; i < xMovementTemp; i++){
+								if(piecePresent(initialX - (i * 75), e.getY())){
+									rookBlocked = true;
+									break;
+								}
+								else{
+									rookBlocked = false;
+								}
+							}
+						}
+						else{
+							for(int i = 0; i < xMovementTemp; i++){
+								if(piecePresent(initialX + (i * 75), e.getY())){
+									rookBlocked = true;
+									break;
+								}
+								else{
+									rookBlocked = false;
+								}
+							}
+						}
+					}
+					else{
+						int yMovementTemp = Math.abs(startY - landingY);
+						if(startY - landingY > 0){
+							for(int i = 0; i < yMovementTemp; i++){
+								if(piecePresent(e.getX(), initialY - (i * 75))){
+									rookBlocked = true;
+									break;
+								}
+								else{
+									rookBlocked = false;
+								}
+							}
+						}
+						else{
+							for(int i = 0; i < yMovementTemp; i++){
+								if(piecePresent(e.getX(), initialY + (i * 75))){
+									rookBlocked = true;
+									break;
+								}
+								else{
+									rookBlocked = false;
+								}
+							}
+						}
+					}
+
+					if(rookBlocked){
+						validMove = false;
+					}
+					else{
+						if(piecePresent(e.getX(), (e.getY()))){
+							if(pieceName.contains("White")){
+								if(checkWhiteOponent(e.getX(), e.getY())){
+									validMove = true;
+								}
+								else{
+									validMove = false;
+								}
+							}
+							else{
+								if(checkBlackOponent(e.getX(), e.getY())){
+									validMove = true;
+								}
+								else{
+									validMove = false;
+								}
+							}
+						}
+						else{
+							validMove = true;
+						}
+					}
+				}
+				else{
+					validMove = false;
 				}
 			}
 		}
