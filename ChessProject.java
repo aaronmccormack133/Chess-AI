@@ -214,6 +214,87 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		if(pieceName.equals("BlackQueen")){
 			validMove = true;
 		}
+		if(pieceName.contains("Bishup")){
+			Boolean bishopBlocked = false;
+			int distance = Math.abs(startX - landingX);
+			if(((landingX < 0) || (landingX > 7)) || ((landingY < 0) || (landingY > 7))){
+				validMove = false;
+				System.out.println("Print");
+			}
+			else{
+				validMove = true;
+				if(Math.abs(startX - landingX) == Math.abs(startY - landingY)){
+					if((startX - landingX < 0) && (startY - landingY < 0)){
+						for(int i = 0; i < distance; i++){
+							if(piecePresent((initialX + (i * 75)), (initialY + (i * 75)))){
+								bishopBlocked = true;
+								System.out.println("first if");
+							}
+						}
+					}
+					else if((startX - landingX < 0) && (startY - landingY > 0)){
+						for(int i = 0; i < distance; i++){
+							if(piecePresent((initialX + (i * 75)), (initialY - (i * 75)))){
+								bishopBlocked = true;
+								System.out.println("second if");
+							}
+						}
+					}
+					else if((startX - landingX > 0) && (startY - landingY > 0)){
+						for(int i = 0; i < distance; i++){
+							if(piecePresent((initialX - (i * 75)), (initialY - (i * 75)))){
+								bishopBlocked = true;
+								System.out.println("third if");
+							}
+						}
+					}
+					else if((startX - landingX > 0) && (startY - landingY < 0)){
+						for(int i = 0; i < distance; i++){
+							if(piecePresent((initialX - (i * 75)), (initialY + (i * 75)))){
+								bishopBlocked = true;
+								System.out.println("fourth if");
+							}
+						}
+					}
+
+					if(bishopBlocked){
+						validMove = false;
+					}
+					else{
+						if(piecePresent(e.getX(), (e.getY()))){
+							if(pieceName.contains("White")){
+								if(checkWhiteOponent(e.getX(), e.getY())){
+									validMove = true;
+									System.out.println("white opp if true");
+								}
+								else{
+									validMove = false;
+									System.out.println("white opp false if");
+								}
+							}
+							else{
+								if(checkBlackOponent(e.getX(), e.getY())){
+									validMove = true;
+									System.out.println("Black opp if true");
+								}
+								else{
+									validMove = false;
+									System.out.println("Bl;ack opp if false");
+								}
+							}
+						}
+						else{
+							validMove = true;
+							System.out.println("Second last if");
+						}
+					}
+				}
+				else{
+					validMove = false;
+					System.out.println("last if");
+				}
+			}
+		}
 		//Black Pawn 
 		//Completed
 		else if(pieceName.equals("BlackPawn")){
