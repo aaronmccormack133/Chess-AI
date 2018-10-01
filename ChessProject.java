@@ -210,9 +210,12 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			If a Pawn makes it to the top of the other side, the Pawn can turn into any other piece, for 
 			demonstration purposes the Pawn here turns into a Queen.
 		*/
+		//Black Queen. Dummy Movement for testing
 		if(pieceName.equals("BlackQueen")){
 			validMove = true;
 		}
+		//Black Pawn 
+		//Completed
 		else if(pieceName.equals("BlackPawn")){
 			if(startY == 6){ //making its first move
 				if(((yMovement == 1) || (yMovement == 2)) && (startY > landingY) && (xMovement == 0)){
@@ -256,6 +259,9 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				//validMove = false;
 			}
 		}
+
+		//White Pawn
+		//Completed
 		else if(pieceName.equals("WhitePawn")){
 			if(startY == 1){
 				if(((yMovement == 1) || (yMovement == 2)) && (startY < landingY) && (xMovement == 0)){
@@ -287,6 +293,26 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				else if((yMovement == 1) && (startY < landingY) && (xMovement == 1)){
 					if(piecePresent(e.getX(), e.getY())){
 						if(checkWhiteOponent(e.getX(), e.getY())){
+							validMove = true;
+						}
+					}
+				}
+			}
+		}
+		//Knight 
+		else if(pieceName.contains("Knight")){
+			if(((xMovement == 1) && (yMovement == 2)) || ((xMovement == 2) && (yMovement == 1))){
+				if(!piecePresent(e.getX(), e.getY())){
+					validMove = true;
+				}
+				else{
+					if(pieceName.contains("White")){
+						if(checkWhiteOponent(e.getX(), e.getY())){
+							validMove = true;
+						}
+					}
+					else{
+						if(checkBlackOponent(e.getX(), e.getY())){
 							validMove = true;
 						}
 					}
