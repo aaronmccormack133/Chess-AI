@@ -210,8 +210,68 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			If a Pawn makes it to the top of the other side, the Pawn can turn into any other piece, for 
 			demonstration purposes the Pawn here turns into a Queen.
 		*/
-		//Black Queen. Dummy Movement for testing
-		if(pieceName.equals("BlackQueen")){
+
+		//King Movements
+		//WIP
+		if(pieceName.contains("King")){
+			Boolean kingBlocked = false;
+			if((xMovement == yMovement) && (xMovement < 2) && (yMovement < 2)){
+				validMove = true;
+				if(Math.abs(startX - landingX) == Math.abs(startY - landingY)){
+					if((startX - landingX < 0) && (startY - landingY < 0)){
+						if(piecePresent(initialX + 75, initialY + 75)){
+							kingBlocked = true;
+						}
+					}
+					
+					if(kingBlocked){
+						validMove = false;
+					}
+					else{
+						if(piecePresent(e.getX(), (e.getY()))){
+							if(pieceName.contains("White")){
+								if(checkWhiteOponent(e.getX(), e.getY())){
+									validMove = true;
+								}
+								else{
+									validMove = false;
+								}
+							}
+							else{
+								if(checkBlackOponent(e.getX(), e.getY())){
+									validMove = true;
+								}
+								else{
+									validMove = false;
+								}
+							}
+						}
+						else{
+							validMove = true;
+						}
+					}
+				}
+			}
+			else if((xMovement != yMovement) && (xMovement < 2) && (yMovement < 2)){
+				validMove = true;
+				if(((Math.abs(startX - landingX) != 0) && (Math.abs(startY - landingY) == 0)) ||
+					((Math.abs(startX - landingX) == 0) && (Math.abs(landingY - startY) != 0))){
+						if(startX - landingX > 0){
+							if(piecePresent(initialX - 75, e.getY())){
+								kingBlocked = true;
+							}
+						}
+						else{
+							if(piecePresent(initialX + 75, e.getY())){
+								kingBlocked = true;
+							}
+						}
+				}
+			}
+		}
+		//Queen Movements
+		//Completed
+		if(pieceName.contains("Queen")){
 			//Rook Movement
 			Boolean rookBlocked = false;
 			Boolean bishopBlocked = false;
@@ -220,7 +280,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				validMove = false;
 			}
 			else if(xMovement != yMovement){
-				if(((Math.abs(startX - landingX) != 0) && (Math.abs(startY - landingY) == 0)) || ((Math.abs(startX - landingX) == 0) && (Math.abs(landingY - startY) != 0))){
+				if(((Math.abs(startX - landingX) != 0) && (Math.abs(startY - landingY) == 0)) || 
+						((Math.abs(startX - landingX) == 0) && (Math.abs(landingY - startY) != 0))){
 					if(Math.abs(startX - landingX) != 0){
 						int xMovementTemp = Math.abs(startX - landingX);
 						if(startX - landingX > 0){
@@ -372,6 +433,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				}
 			}
 		}
+
 		//Bishop movements
 		//Note: Bishup is spelt wrong in the code. All pre-written code is Bishup, not bishop. My code is Bishop.
 		//Completed.
