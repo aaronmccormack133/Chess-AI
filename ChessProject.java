@@ -189,7 +189,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
     public void mouseReleased(MouseEvent e) {
  
         chessPiece.setVisible(false);
-		Boolean success =false;
+		Boolean WhiteSuccess = false;
+		Boolean BlackSuccess = false;
         Component c =  chessBoard.findComponentAt(e.getX(), e.getY());
 		String tmp = chessPiece.getIcon().toString();
 		String pieceName = tmp.substring(0, (tmp.length()-4));
@@ -685,6 +686,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 					if(!piecePresent(e.getX(), e.getY())){
 						validMove = true;
 						//Turn the pawn into a Queen.
+						if(startY == 1){
+							System.out.println("True");
+							BlackSuccess = true;
+						}
 					}
 				}
 				//Taking other pieces.
@@ -692,6 +697,9 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 					if(piecePresent(e.getX(), e.getY())){
 						if(checkBlackOponent(e.getX(), e.getY())){
 							validMove = true;
+							if(startY == 1){
+								BlackSuccess = true;
+							}
 						}
 					}
 				}
@@ -721,18 +729,27 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 					if(piecePresent(e.getX(), e.getY())){
 						if(checkWhiteOponent(e.getX(), e.getY())){
 							validMove = true;
+							if(startY == 6){
+								WhiteSuccess = true;
+							}
 						}
 					}
 				}
 				else if((yMovement == 1) && (startY < landingY) && (xMovement == 0)){
 					if(!piecePresent(e.getX(), e.getY())){
 						validMove = true;
+						if(startY == 6){
+							WhiteSuccess = true;
+						}
 					}
 				}
 				else if((yMovement == 1) && (startY < landingY) && (xMovement == 1)){
 					if(piecePresent(e.getX(), e.getY())){
 						if(checkWhiteOponent(e.getX(), e.getY())){
 							validMove = true;
+							if(startY == 6){
+								WhiteSuccess = true;
+							}
 						}
 					}
 				}
@@ -772,7 +789,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		    panels.add(pieces);			
 		}
 		else{
-			if(success){
+			if(WhiteSuccess){
 				int location = 56 + (e.getX()/75);
 				if (c instanceof JLabel){
 	            	Container parent = c.getParent();
@@ -786,6 +803,22 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	            	pieces = new JLabel( new ImageIcon("WhiteQueen.png") );
 					parent = (JPanel)chessBoard.getComponent(location);
 			    	parent.add(pieces);	            	
+				}
+			}
+			else if(BlackSuccess){
+				int location = 0 + (e.getX()/75);
+				if(c instanceof JLabel){
+					Container parent = c.getParent();
+					parent.remove(0);
+					pieces = new JLabel(new ImageIcon("BlackQueen.png"));
+					parent = (JPanel)chessBoard.getComponent(location);
+					parent.add(pieces);
+				}
+				else{
+					Container parent = (Container)c;
+					pieces = new JLabel(new ImageIcon("BlackQueen.png"));
+					parent = (JPanel)chessBoard.getComponent(location);
+					parent.add(pieces);
 				}
 			}
 			else{
