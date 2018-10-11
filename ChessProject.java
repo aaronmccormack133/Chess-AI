@@ -218,113 +218,32 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			if((landingX < 0) || (landingX > 7) || (landingY < 0) || (landingY > 7)){
 				validMove = false;
 			}
-			else if((xMovement == yMovement) && (xMovement < 2) && (yMovement < 2)){
-				validMove = true;
-				if(Math.abs(startX - landingX) == Math.abs(startY - landingY)){
-					if((startX - landingX < 0) && (startY - landingY < 0)){
-						if(piecePresent(initialX + 75, initialY + 75)){
-							kingBlocked = true;
-						}
-					}
-					
-					if(kingBlocked){
-						validMove = false;
-					}
-					else{
-						if(piecePresent(e.getX(), (e.getY()))){
-							if(pieceName.contains("White")){
-								if(checkWhiteOponent(e.getX(), e.getY())){
-									validMove = true;
-								}
-								else{
-									validMove = false;
-								}
-							}
-							else{
-								if(checkBlackOponent(e.getX(), e.getY())){
-									validMove = true;
-								}
-								else{
-									validMove = false;
-								}
-							}
+			else if((xMovement < 2) && (yMovement < 2)){
+				//validMove = true;
+				if(piecePresent(e.getX(), e.getY())){
+					if(pieceName.contains("White")){
+						if(checkWhiteOponent(e.getX(), e.getY())){
+							validMove = true;
 						}
 						else{
+							validMove = false;
+						}
+					}
+					else{
+						if(checkBlackOponent(e.getX(), e.getY())){
 							validMove = true;
+						}
+						else{
+							validMove = false;
 						}
 					}
 				}
 				else{
-					validMove = false;
+					validMove = true;
 				}
-			}
-			else if((xMovement != yMovement) && (xMovement < 2) && (yMovement < 2)){
-				validMove = true;
-				if(((Math.abs(startX - landingX) != 0) && (Math.abs(startY - landingY) == 0)) ||
-					((Math.abs(startX - landingX) == 0) && (Math.abs(landingY - startY) != 0))){
-						if(Math.abs(startX - landingX) != 0){
-							if(startX - landingX > 0){
-								if(piecePresent(initialX - 75, e.getY())){
-									kingBlocked = true;
-								}
-							}
-							else{
-								if(piecePresent(initialX + 75, e.getY())){
-									kingBlocked = true;
-								}
-							}
-						}
-					else{
-						if(startY - landingY > 0){
-							if(piecePresent(e.getX(), initialY - 75)){
-								kingBlocked = true;
-							}
-							else{
-								kingBlocked = false;	
-							}
-						}
-						else{
-							if(piecePresent(e.getX(), initialY + 75)){
-								kingBlocked = true;
-							}
-							else{
-								kingBlocked = false;
-							}
-						}
-					}
-
-					if(kingBlocked){
-						validMove = false;
-					}
-					else{
-						if(piecePresent(e.getX(), (e.getY()))){
-							if(pieceName.contains("White")){
-								if(checkWhiteOponent(e.getX(), e.getY())){
-									validMove = true;
-								}
-								else{
-									validMove = false;
-								}
-							}
-							else{
-								if(checkBlackOponent(e.getX(), e.getY())){
-									validMove = true;
-								}
-								else{
-									validMove = false;
-								}
-							}
-						}
-						else{
-							validMove = true;
-						}
-					}
-				}
-				else{
-					validMove = false;
-				}
-			}
+			}				
 		}
+		
 		//Queen Movements
 		//Completed
 		if(pieceName.contains("Queen")){
