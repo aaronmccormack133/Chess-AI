@@ -153,6 +153,38 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		}		
 		return oponent;
 	}	
+
+	public Boolean checkKingPos(int newX, int newY){
+		int landingX = (newX/75);
+		int landingY = (newY/75);
+		Boolean oponent;
+		oponent = false;
+		Component c2 = chessBoard.findComponentAt(newX, newY);
+		JLabel awaitingPiece = (JLabel)c2;
+		String tmp2 = awaitingPiece.getIcon().toString();
+		if(((tmp2.contains("King")))){
+			//dont use landingx
+			if(piecePresent(landingX + 75, landingY)){
+				oponent = true;
+			}
+			else if(piecePresent(landingX + 75, landingY + 75)){
+				oponent = true;
+			}
+			else if(piecePresent(landingX - 75, landingY)){
+				oponent = true;
+			}
+			else if(piecePresent(landingX - 75, landingY - 75)){
+				oponent = true;
+			}
+			else{
+				oponent = false;
+			}
+		}
+		else{
+			oponent = false;
+		}
+		return oponent;
+	}
 	/*
 		This method is called when we press the Mouse. So we need to find out what piece we have 
 		selected. We may also not have selected a piece!
@@ -223,7 +255,12 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				if(piecePresent(e.getX(), e.getY())){
 					if(pieceName.contains("White")){
 						if(checkWhiteOponent(e.getX(), e.getY())){
-							validMove = true;
+							if(checkKingPos(e.getX(), e.getY())){
+								validMove = true;
+							}
+							else{
+								validMove = false;
+							}
 						}
 						else{
 							validMove = false;
@@ -231,7 +268,12 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 					}
 					else{
 						if(checkBlackOponent(e.getX(), e.getY())){
-							validMove = true;
+							if(checkKingPos(e.getX(), e.getY())){
+								validMove = true;
+							}
+							else{
+								validMove = false;
+							}
 						}
 						else{
 							validMove = false;
