@@ -179,15 +179,19 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	}
 
 	public Boolean checkKing(int newX, int newY){
-
 		if(piecePresent(newX, newY)){
-			Component c2 = chessBoard.findComponentAt(newX, newY);
-			JLabel awaitingPiece = (JLabel)c2;
-			String tmp2 = awaitingPiece.getIcon().toString();
-			if(tmp2.contains("King")){
-				return true;
+			try{
+				Component c2 = chessBoard.findComponentAt(newX, newY);
+				JLabel awaitingPiece = (JLabel)c2;
+				String tmp2 = awaitingPiece.getIcon().toString();
+				if(tmp2.contains("King")){
+					return true;
+				}
+				else{
+					return false;
+				}
 			}
-			else{
+			catch(Exception e){
 				return false;
 			}
 		}
