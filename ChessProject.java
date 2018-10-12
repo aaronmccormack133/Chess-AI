@@ -125,6 +125,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	
 	/*
 		This is a method to check if a piece is a Black piece.
+		Also checks for endgame scenario when the king piece is taken
 	*/
 	private Boolean checkWhiteOponent(int newX, int newY){
 		Boolean oponent;
@@ -144,6 +145,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		return oponent;
 	}	
 
+	//Method to check for a white opponent piece
+	//Also checks for endgame scenario when the white queen is taken
 	private Boolean checkBlackOponent(int newX, int newY){
 		Boolean oponent;
 		Component c2 = chessBoard.findComponentAt(newX, newY);
@@ -162,6 +165,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		return oponent;
 	}	
 
+	//Uses the CheckKing method to check for the opponent is in the surrounding area of landing
+	//Returns boolean
 	public Boolean checkKingPos(int newX, int newY){
 		if((checkKing(newX + 75, newY)) ||
 			(checkKing(newX + 75, newY + 75)) ||
@@ -178,6 +183,9 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		}
 	}
 
+	//Takes the kings into consideration, looks for the opponent king
+	//Try Catch to avoid king clipping off the board if it reaches the side columns
+	//Returns Boolean
 	public Boolean checkKing(int newX, int newY){
 		if(piecePresent(newX, newY)){
 			try{
@@ -235,7 +243,10 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	*/
 	public void mouseReleased(MouseEvent e) {
  
-        chessPiece.setVisible(false);
+		chessPiece.setVisible(false);
+		//Booleans for Pawn Promotion
+		//WhiteSuccess is for white pawn reaching the top
+		//BlackSuccess for the black pawn reaching the top
 		Boolean WhiteSuccess = false;
 		Boolean BlackSuccess = false;
         Component c =  chessBoard.findComponentAt(e.getX(), e.getY());
@@ -260,7 +271,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		*/
 
 		//King Movements
-		//WIP
+		//If there is a king in the surrounding squares, it will return true
+		//This is the opposite of what want so we invert the methods results 
 		if(pieceName.contains("King")){
 			Boolean kingBlocked = false;
 			if((landingX < 0) || (landingX > 7) || (landingY < 0) || (landingY > 7)){
@@ -302,7 +314,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		}
 		
 		//Queen Movements
-		//Completed
 		if(pieceName.contains("Queen")){
 			//Rook Movement
 			Boolean rookBlocked = false;
@@ -468,7 +479,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 
 		//Bishop movements
 		//Note: Bishup is spelt wrong in the code. All pre-written code is Bishup, not bishop. My code is Bishop.
-		//Completed.
 		if(pieceName.contains("Bishup")){
 			Boolean bishopBlocked = false;
 			int distance = Math.abs(startX - landingX);
@@ -541,7 +551,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		}
 
 		//Rook Movements
-		//Completed
 		if(pieceName.contains("Rook")){
 			Boolean rookBlocked = false;
 			if(((landingX < 0) || (landingX > 7)) || ((landingY < 0) || (landingY > 7))){
@@ -633,7 +642,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			}
 		}
 		//Black Pawn 
-		//Completed
 		else if(pieceName.equals("BlackPawn")){
 			if((landingX < 0) || (landingX > 7) || (landingY < 0) || (landingY > 7)){
 				validMove = false;
@@ -641,7 +649,6 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			else if(startY == 6){ //making its first move
 				if(((yMovement == 1) || (yMovement == 2)) && (startY > landingY) && (xMovement == 0)){
 					//Move upwards if moving one or two squares.
-					//validMove = true;
 					if(yMovement == 2){
 						if((!piecePresent(e.getX(), e.getY())) && (!piecePresent(e.getX(), e.getY()+75))){
 							validMove = true;
@@ -688,7 +695,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		}
 
 		//White Pawn
-		//Completed
+		//For the white pawn, I used the code completed from the black pawn and inverted the code.
 		else if(pieceName.equals("WhitePawn")){
 			if((landingX < 0) || (landingX > 7) || (landingY < 0) || (landingY > 7)){
 				validMove = false;
@@ -720,6 +727,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 						if(checkWhiteOponent(e.getX(), e.getY())){
 							validMove = true;
 							if(startY == 6){
+								//When the pawn reaches the top of the board, promote to a queen
 								WhiteSuccess = true;
 							}
 						}
@@ -745,6 +753,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 				}
 			}
 		}
+
 		//Knight 
 		else if(pieceName.contains("Knight")){
 			if((landingX < 0) || (landingX > 7) || (landingY < 0) || (landingY > 7)){
@@ -782,6 +791,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		    panels.add(pieces);			
 		}
 		else{
+			//Checking to see if the pawn reaches the bottom of the board,
+			//if true, change to queen
 			if(WhiteSuccess){
 				int location = 56 + (e.getX()/75);
 				if (c instanceof JLabel){
@@ -798,6 +809,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			    	parent.add(pieces);	            	
 				}
 			}
+			//Checking to see if the pawn reaches the top of the board,
+			//If true, change to queen
 			else if(BlackSuccess){
 				int location = 0 + (e.getX()/75);
 				if(c instanceof JLabel){
@@ -839,12 +852,16 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
  
     public void mouseClicked(MouseEvent e) {
 	
-    }
+	}
+	
     public void mouseMoved(MouseEvent e) {
-   }
+
+	}
+	   
     public void mouseEntered(MouseEvent e){
 	
-    }
+	}
+	
     public void mouseExited(MouseEvent e) {
 	
     }
