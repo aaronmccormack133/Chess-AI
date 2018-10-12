@@ -163,17 +163,28 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	}	
 
 	public Boolean checkKingPos(int newX, int newY){
-		Component c2 = chessBoard.findComponentAt(newX, newY);
-		JLabel awaitingPiece = (JLabel)c2;
-		String tmp2 = awaitingPiece.getIcon().toString();
-		if(((tmp2.contains("King")))){
-			if((piecePresent(newX, newY)) ||
-			(piecePresent(newX + 75, newY) ||
-			(piecePresent(newX + 75, newY + 75)) ||
-			(piecePresent(newX, newY + 75)) || 
-			(piecePresent(newX - 75, newY)) ||
-			(piecePresent(newX - 75, newY - 75)) || 
-			(piecePresent(newX, newY - 75)))){
+		if((checkKing(newX + 75, newY)) ||
+			(checkKing(newX + 75, newY + 75)) ||
+			(checkKing(newX, newY + 75)) ||
+			(checkKing(newX - 75, newY)) ||
+			(checkKing(newX - 75, newY - 75)) ||
+			(checkKing(newX, newY - 75)) ||
+			(checkKing(newX + 75, newY - 75)) ||
+			(checkKing(newX - 75, newY + 75))){
+				return true;
+		}
+		else{
+			return false;
+		}
+	}
+
+	public Boolean checkKing(int newX, int newY){
+
+		if(piecePresent(newX, newY)){
+			Component c2 = chessBoard.findComponentAt(newX, newY);
+			JLabel awaitingPiece = (JLabel)c2;
+			String tmp2 = awaitingPiece.getIcon().toString();
+			if(tmp2.contains("King")){
 				return true;
 			}
 			else{
@@ -183,6 +194,8 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 		else{
 			return false;
 		}
+		
+
 	}
 	/*
 		This method is called when we press the Mouse. So we need to find out what piece we have 
@@ -251,37 +264,36 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 			}
 			else if((xMovement < 2) && (yMovement < 2)){
 				//validMove = true;
-				if(piecePresent(e.getX(), e.getY())){
-					if(pieceName.contains("White")){
-						if(checkWhiteOponent(e.getX(), e.getY())){
-							if(checkKingPos(e.getX(), e.getY())){
-								validMove = false;
+				if(!checkKingPos(e.getX(), e.getY())){
+					if(piecePresent(e.getX(), e.getY())){
+						if(pieceName.contains("White")){
+							if(checkWhiteOponent(e.getX(), e.getY())){
+								validMove = true;
 							}
 							else{
-								validMove = true;
+								validMove = false;
 							}
 						}
 						else{
-							validMove = false;
+							if(checkBlackOponent(e.getX(), e.getY())){
+								validMove = true;
+							}
+							else{
+								validMove = false;
+							}
 						}
 					}
 					else{
-						if(checkBlackOponent(e.getX(), e.getY())){
-							if(checkKingPos(e.getX(), e.getY())){
-								validMove = false;
-							}
-							else{
-								validMove = true;
-							}
-						}
-						else{
-							validMove = false;
-						}
+						validMove = true;
 					}
 				}
 				else{
-					validMove = true;
+					validMove = false;
 				}
+				
+			}
+			else{
+				validMove =false;
 			}				
 		}
 		
