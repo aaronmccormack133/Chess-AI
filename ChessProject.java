@@ -39,6 +39,7 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 	AIAgent agent;
 	Boolean agentwins;
 	Stack temporary;
+	static int gameOption;
 
 
 	public ChessProject(){
@@ -145,27 +146,149 @@ public class ChessProject extends JFrame implements MouseListener, MouseMotionLi
 */
 private Stack getWhitePawnSquares(int x, int y, String piece){
 	Stack moves = new Stack();
-
 	Square startingSquare = new Square(x, y, piece);
-	Move validM, validM2, validM3;
-	int tmpy1 = y+1;
-	int tmpy2 = y+2;
-	int tmpx1 = x+1;
+	Move validM, validM2, validM3, validM4;
 
-	if(!(tmpy1 > 7)){
-		Square tmp = new Square(x, tmpy1, piece);
-		Square tmp2 = new Square(x, tmpy2, piece);
-		Square tmp3 = new Square(tmpx1, tmpy1, piece);
-		if(checkSurroundingSquares(tmp)){
-			validM = new Move(startingSquare, tmp);
-			validM2 = new Move(startingSquare, tmp3);
-			if(!piecePresent(tmp.getXC(), tmp.getYC() + 75)){
-				moves.push(validM);
+	int tmpx = x;
+	int tmpx2 = x + 1;
+	int tmpx3 = x - 1;
+	int tmpy = y + 1;
+	int tmpy2 = y + 2;
+
+	//Standard Move	
+	Square tmp = new Square(tmpx, tmpy, piece);
+	//Starting Move 2 squares
+	Square tmp2 = new Square(tmpx, tmpy2, piece);
+	//Take Right
+	Square tmp3 = new Square(tmpx2, tmpy, piece);
+	//Take Left
+	Square tmp4 = new Square(tmpx3, tmpy, piece);
+
+	if(y == 1){
+		validM = new Move(startingSquare, tmp2);
+		if(!(piecePresent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20))) && (!(piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20))))))){
+			moves.push(validM);
+		}
+		else{
+			if(tmpx2 < 7){
+				if(piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+					if(checkWhiteOponent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+						moves.push(validM);
+					}
+				}
 			}
-			else if(checkWhiteOponent(tmp.getXC() + 75, tmp.getYC() + 75)){
-				moves.push(validM2);
+
+			if(tmpx3 > 0){
+				if(piecePresent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+					if(checkWhiteOponent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+						moves.push(validM);
+					}
+				}
+			}
+		}		
+	}
+	if(!(tmpy > 7)){
+		validM2 = new Move(startingSquare, tmp);
+		if(!(piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20))))){
+			moves.push(validM2);
+		}
+
+		if(!(tmpx2 > 7)){
+			validM3 = new Move(startingSquare, tmp3);
+			if(piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+				if(checkWhiteOponent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+					moves.push(validM3);
+				}
 			}
 		}
+		if(!(tmpx3 < 0)){
+			validM4 = new Move(startingSquare, tmp4);
+			if(piecePresent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+				if(checkWhiteOponent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+					moves.push(validM4);
+				}
+			}
+		}
+	
+
+	
+		// validM4 = new Move(startingSquare, tmp4);
+		// if(piecePresent((())))
+	}
+
+	return moves;
+}
+
+private Stack getBlackPawnSquares(int x, int y, String piece){
+	Stack moves = new Stack();
+	Square startingSquare = new Square(x, y, piece);
+	Move validM, validM2, validM3, validM4;
+
+	int tmpx = x;
+	int tmpx2 = x + 1;
+	int tmpx3 = x - 1;
+	int tmpy = y - 1;
+	int tmpy2 = y - 2;
+
+	//Standard Move	
+	Square tmp = new Square(tmpx, tmpy, piece);
+	//Starting Move 2 squares
+	Square tmp2 = new Square(tmpx, tmpy2, piece);
+	//Take Right
+	Square tmp3 = new Square(tmpx2, tmpy, piece);
+	//Take Left
+	Square tmp4 = new Square(tmpx3, tmpy, piece);
+
+	if(y == 1){
+		validM = new Move(startingSquare, tmp2);
+		if(!(piecePresent(((tmp2.getXC() * 75) + 20), (((tmp2.getYC() * 75) + 20))) && (!(piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20))))))){
+			moves.push(validM);
+		}
+		else{
+			if(tmpx2 < 7){
+				if(piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+					if(checkWhiteOponent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+						moves.push(validM);
+					}
+				}
+			}
+
+			if(tmpx3 > 0){
+				if(piecePresent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+					if(checkWhiteOponent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+						moves.push(validM);
+					}
+				}
+			}
+		}		
+	}
+	if(!(tmpy > 7)){
+		validM2 = new Move(startingSquare, tmp);
+		if(!(piecePresent(((tmp.getXC() * 75) + 20), (((tmp.getYC() * 75) + 20))))){
+			moves.push(validM2);
+		}
+
+		if(!(tmpx2 > 7)){
+			validM3 = new Move(startingSquare, tmp3);
+			if(piecePresent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+				if(checkWhiteOponent(((tmp3.getXC() * 75) + 20), (((tmp3.getYC() * 75) + 20)))){
+					moves.push(validM3);
+				}
+			}
+		}
+		if(!(tmpx3 < 0)){
+			validM4 = new Move(startingSquare, tmp4);
+			if(piecePresent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+				if(checkWhiteOponent(((tmp4.getXC() * 75) + 20), (((tmp4.getYC() * 75) + 20)))){
+					moves.push(validM4);
+				}
+			}
+		}
+	
+
+	
+		// validM4 = new Move(startingSquare, tmp4);
+		// if(piecePresent((())))
 	}
 
 	return moves;
@@ -283,11 +406,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	if(checkSurroundingSquares(tmp)){
 	  validM = new Move(startingSquare, tmp);
 	  if(!piecePresent(((tmp.getXC()*75)+20), (((tmp.getYC()*75)+20)))){
-		moves.push(validM);
+		  if(kingInCheck(((tmp.getXC() * 75)), (((tmp.getYC() * 75))), piece)){
+			moves.push(validM);
+		  }
 	  }
 	  else{
 		if(checkWhiteOponent(((tmp.getXC()*75)+20), (((tmp.getYC()*75)+20)))){
-		  moves.push(validM);
+		  if(kingInCheck(((tmp.getXC() * 75)), (((tmp.getYC() * 75))), piece)){
+			moves.push(validM);
+		  }
 		}
 	  }
 	}
@@ -295,11 +422,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	  if(checkSurroundingSquares(tmp1)){
 		validM2 = new Move(startingSquare, tmp1);
 		if(!piecePresent(((tmp1.getXC()*75)+20), (((tmp1.getYC()*75)+20)))){
-		  moves.push(validM2);
+		  if(kingInCheck(((tmp1.getXC() * 75)), (((tmp1.getYC() * 75))), piece)){
+			moves.push(validM2);
+		  }
 		}
 		else{
 		  if(checkWhiteOponent(((tmp1.getXC()*75)+20), (((tmp1.getYC()*75)+20)))){
+		  if(kingInCheck(((tmp1.getXC() * 75)), (((tmp1.getYC() * 75))), piece)){
 			moves.push(validM2);
+		  }
 		  }
 		}
 	  }
@@ -308,12 +439,16 @@ private Stack getKingSquares(int x, int y, String piece){
 	  if(checkSurroundingSquares(tmp2)){
 		validM3 = new Move(startingSquare, tmp2);
 		if(!piecePresent(((tmp2.getXC()*75)+20), (((tmp2.getYC()*75)+20)))){
-		  moves.push(validM3);
+		  if(kingInCheck(((tmp2.getXC() * 75)), (((tmp2.getYC() * 75))), piece)){
+			moves.push(validM3);
+		  }
 		}
 		else{
 		  System.out.println("The values that we are going to be looking at are : "+((tmp2.getXC()*75)+20)+" and the y value is : "+((tmp2.getYC()*75)+20));
 		  if(checkWhiteOponent(((tmp2.getXC()*75)+20), (((tmp2.getYC()*75)+20)))){
+		  if(kingInCheck(((tmp2.getXC() * 75)), (((tmp2.getYC() * 75))), piece)){
 			moves.push(validM3);
+		  }
 		  }
 		}
 	  }
@@ -326,11 +461,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	if(checkSurroundingSquares(tmp3)){
 	  validM = new Move(startingSquare, tmp3);
 	  if(!piecePresent(((tmp3.getXC()*75)+20), (((tmp3.getYC()*75)+20)))){
-		moves.push(validM);
+		  if(kingInCheck(((tmp3.getXC() * 75)), (((tmp3.getYC() * 75))), piece)){
+			moves.push(validM);
+		  }
 	  }
 	  else{
 		if(checkWhiteOponent(((tmp3.getXC()*75)+20), (((tmp3.getYC()*75)+20)))){
-		  moves.push(validM);
+		  if(kingInCheck(((tmp3.getXC() * 75)), (((tmp3.getYC() * 75))), piece)){
+			moves.push(validM);
+		  }
 		}
 	  }
 	}
@@ -338,11 +477,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	  if(checkSurroundingSquares(tmp4)){
 		validM2 = new Move(startingSquare, tmp4);
 		if(!piecePresent(((tmp4.getXC()*75)+20), (((tmp4.getYC()*75)+20)))){
-		  moves.push(validM2);
+		  if(kingInCheck(((tmp4.getXC() * 75)), (((tmp4.getYC() * 75))), piece)){
+			moves.push(validM2);
+		  }
 		}
 		else{
 		  if(checkWhiteOponent(((tmp4.getXC()*75)+20), (((tmp4.getYC()*75)+20)))){
+		  if(kingInCheck(((tmp4.getXC() * 75)), (((tmp4.getYC() * 75))), piece)){
 			moves.push(validM2);
+		  }
 		  }
 		}
 	  }
@@ -351,11 +494,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	  if(checkSurroundingSquares(tmp5)){
 		validM3 = new Move(startingSquare, tmp5);
 		if(!piecePresent(((tmp5.getXC()*75)+20), (((tmp5.getYC()*75)+20)))){
-		  moves.push(validM3);
+		  if(kingInCheck(((tmp5.getXC() * 75)), (((tmp5.getYC() * 75))), piece)){
+			moves.push(validM3);
+		  }
 		}
 		else{
 		  if(checkWhiteOponent(((tmp5.getXC()*75)+20), (((tmp5.getYC()*75)+20)))){
+		  if(kingInCheck(((tmp5.getXC() * 75)), (((tmp5.getYC() * 75))), piece)){
 			moves.push(validM3);
+		  }
 		  }
 		}
 	  }
@@ -367,11 +514,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	if(checkSurroundingSquares(tmp7)){
 	  validM2 = new Move(startingSquare, tmp7);
 	  if(!piecePresent(((tmp7.getXC()*75)+20), (((tmp7.getYC()*75)+20)))){
-		moves.push(validM2);
+		  if(kingInCheck(((tmp7.getXC() * 75)), (((tmp7.getYC() * 75))), piece)){
+			moves.push(validM2);
+		  }
 	  }
 	  else{
 		if(checkWhiteOponent(((tmp7.getXC()*75)+20), (((tmp7.getYC()*75)+20)))){
-		  moves.push(validM2);
+		  if(kingInCheck(((tmp7.getXC() * 75)), (((tmp7.getYC() * 75))), piece)){
+			moves.push(validM2);
+		  }
 		}
 	  }
 	}
@@ -380,11 +531,15 @@ private Stack getKingSquares(int x, int y, String piece){
 	if(checkSurroundingSquares(tmp8)){
 	  validM3 = new Move(startingSquare, tmp8);
 	  if(!piecePresent(((tmp8.getXC()*75)+20), (((tmp8.getYC()*75)+20)))){
-		moves.push(validM3);
+		  if(kingInCheck(((tmp8.getXC() * 75)), (((tmp8.getYC() * 75))), piece)){
+			moves.push(validM3);
+		  }
 	  }
 	  else{
 		if(checkWhiteOponent(((tmp8.getXC()*75)+20), (((tmp8.getYC()*75)+20)))){
-		  moves.push(validM3);
+		  if(kingInCheck(((tmp8.getXC() * 75)), (((tmp8.getYC() * 75))), piece)){
+			moves.push(validM3);
+		  }
 		}
 	  }
 	}
@@ -728,6 +883,11 @@ private Stack getKnightMoves(int x, int y, String piece){
 		  attackingMove.push(tmpmove);
 		}
 	  }
+	  else{
+		if(checkBlackOponent(tmp.getXC(), tmp.getYC())){
+			attackingMove.push(tmpmove);
+		}
+	  }
 	}
 	else{
 	  attackingMove.push(tmpmove);
@@ -735,28 +895,6 @@ private Stack getKnightMoves(int x, int y, String piece){
   }
   return attackingMove;
 }
-
-//Getting white attacking squares
-// private Stack getWhiteAttackingSquares(Stack pieces){
-// 	while(!pieces.empty()){
-// 		Square s = (Square)pieces.pop();
-// 		String tmpString = s.getName();
-// 		if(tmpString.contains("Knight")){
-// 			tempK = getKnightMoves(s.getXC(), s.getYC(), s.getName());
-// 			while(!tempK.empty()){
-// 				Square tempKnight = (Square)tempK.pop();
-// 				Knight.push(tempKnight);
-// 			}
-// 		}
-// 		else if(tmpString.contains("Bishop")){
-// 			tempB = getBishopMoves(s.getXC(), s.getYC(), s.getName());
-// 			while(!tempB.empty()){
-// 				Square tempBish = (Square)tempB.pop();
-// 				Bishop.push(tempBish);
-// 			}
-// 		}
-// 	}
-// }
 
 
 /*
@@ -816,6 +954,34 @@ private void getLandingSquares(Stack found){
 	return squares;
   }
 
+  //Finding al the black pieces
+  private Stack findBlackPieces(){
+	Stack squares = new Stack();
+	String icon;
+	int x;
+	int y;
+	String pieceName;
+	for(int i=0;i < 600;i+=75){
+		for(int j=0;j < 600;j+=75){
+		y = i/75;
+		x=j/75;
+		Component tmp = chessBoard.findComponentAt(j, i);
+			if(tmp instanceof JLabel){
+				chessPiece = (JLabel)tmp;
+				icon = chessPiece.getIcon().toString();
+				pieceName = icon.substring(0, (icon.length()-4));
+				if(pieceName.contains("Black")){
+				Square stmp = new Square(x, y, pieceName);
+				squares.push(stmp);
+				}
+			}
+		}
+	}
+
+	return squares;
+
+  	}
+
 	/*
 		This method checks if there is a piece present on a particular square.
 	*/
@@ -868,6 +1034,229 @@ private void printStack(Stack input){
   }
 }
 
+private Stack attackWhitePieces(Stack pieces){
+	Stack square = new Stack();
+	Stack tmp;
+
+	while(!pieces.empty()){
+		Square s = (Square) pieces.pop();
+		String tmpName = s.getName();
+
+		if(tmpName.contains("Knight")){
+			tmp = getKnightMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move knightTmp = (Move) tmp.pop();
+				square.push(knightTmp);
+			}
+		}
+		else if(tmpName.contains("Bishop")){
+			tmp = getBishopMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move bishTmp = (Move) tmp.pop();
+				square.push(bishTmp);
+			}
+		}
+		else if(tmpName.contains("Rook")){
+			tmp = getRookMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move rookTmp = (Move) tmp.pop();
+				square.push(rookTmp);
+			}
+		}
+		else if(tmpName.contains("Queen")){
+			tmp = getQueenMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move queenTmp = (Move) tmp.pop();
+				square.push(queenTmp);
+			}
+		}
+		else if(tmpName.contains("King")){
+			tmp = getKingSquares(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move kingTmp = (Move) tmp.pop();
+				square.push(kingTmp);
+			}
+		}
+		else if(tmpName.contains("Pawn")){
+			tmp = getWhitePawnSquares(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move pawnTmp = (Move) tmp.pop();
+				square.push(pawnTmp);
+			}
+		}
+	}
+	return square;
+}
+
+private Stack attackingBlackPieces(Stack pieces){
+	Stack square = new Stack();
+	Stack tmp;
+
+	while(!pieces.empty()){
+		Square s = (Square) pieces.pop();
+		String tmpName = s.getName();
+
+		if(tmpName.contains("Knight")){
+			tmp = getKnightMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move knightTmp = (Move) tmp.pop();
+				square.push(knightTmp);
+			}
+		}
+		else if(tmpName.contains("Bishop")){
+			tmp = getBishopMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move bishTmp = (Move) tmp.pop();
+				square.push(bishTmp);
+			}
+		}
+		else if(tmpName.contains("Rook")){
+			tmp = getRookMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move rookTmp = (Move) tmp.pop();
+				square.push(rookTmp);
+			}
+		}
+		else if(tmpName.contains("Queen")){
+			tmp = getQueenMoves(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move queenTmp = (Move) tmp.pop();
+				square.push(queenTmp);
+			}
+		}
+		else if(tmpName.contains("King")){
+			tmp = getKingSquares(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move kingTmp = (Move) tmp.pop();
+				square.push(kingTmp);
+			}
+		}
+		else if(tmpName.contains("Pawn")){
+			tmp = getBlackPawnSquares(s.getXC(), s.getYC(), s.getName());
+			while(!tmp.empty()){
+				Move pawnTmp = (Move) tmp.pop();
+				square.push(pawnTmp);
+			}
+		}
+	}
+	return square;
+}
+
+public void placePiece(int x, int y, String pieceName){
+	resetBorders();
+	layeredPane.validate();
+	layeredPane.repaint();
+
+	pieces = new JLabel(new ImageIcon(pieceName));
+	int landingPanelID = ((y / 75 * 8) + x / 75);
+	panels = (JPanel) chessBoard.getComponent(landingPanelID);
+	panels.add(pieces);
+	resetBorders();
+	layeredPane.validate();
+	layeredPane.repaint();
+}
+
+public void removePiece(int x, int y){
+	resetBorders();
+	layeredPane.validate();
+	layeredPane.repaint();
+
+	Component c = (JLabel) chessBoard.findComponentAt(x, y);
+	Container parent = c.getParent();
+	parent.remove(c);
+
+	resetBorders();
+	layeredPane.validate();
+	layeredPane.repaint();
+}
+
+private boolean kingInCheck(int x, int y, String piece){
+	resetBorders();
+	layeredPane.validate();
+	layeredPane.repaint();
+	Boolean move = true;
+	String pieceName = getPieceName(x, y);
+
+	if(piece.contains("White")){
+		Stack blackPieces = findBlackPieces();
+		Stack blackAttack = attackingBlackPieces(blackPieces);
+		if(pieceName.contains("White")){
+
+		}
+		else if(pieceName.contains("Black")){
+			removePiece(x, y);
+			placePiece(x, y, "WhiteKing.png");
+
+			Stack tempAttackSquare = (Stack) blackAttack.clone();
+
+			removePiece(x, y);
+			placePiece(x, y, pieceName);
+
+			while(!tempAttackSquare.empty()){
+				Move m = (Move) tempAttackSquare.pop();
+				Square s = (Square) m.getLanding();
+				if((s.getXC() == x / 75) && (s.getYC() == y / 75)){
+					move = false;
+				}
+			}
+		}
+		else{
+			placePiece(x, y, "WhiteKing.png");
+
+			Stack tempAttackSquare = (Stack) blackAttack.clone();
+
+			removePiece(x, y);
+
+			while(!tempAttackSquare.empty()){
+				Move m = (Move) tempAttackSquare.pop();
+				Square s = (Square) m.getLanding();
+				if((s.getXC() == x / 75) && (s.getYC() == y / 75)){
+					move = false;
+				}
+			}
+		}
+	}
+	else{
+		if(pieceName.contains("White")){
+			removePiece(x, y);
+			placePiece(x, y, "BlackKing.png");
+
+			Stack whitePieces = findWhitePieces();
+			Stack whiteAttack = attackWhitePieces(whitePieces);
+
+			while(!whiteAttack.empty()){
+				Move m = (Move) whiteAttack.pop();
+				Square s = (Square) m.getLanding();
+				if((s.getXC() == x / 75) && (s.getYC() == y / 75)){
+					removePiece(x, y);
+					placePiece(x, y, pieceName);
+					move = false;
+				}
+			}
+		}
+		else{
+			placePiece(x, y, "BlackKing.png");
+			Stack whitePieces = findWhitePieces();
+			Stack whiteAttack = attackWhitePieces(whitePieces);
+
+			removePiece(x, y);
+
+			while(!whiteAttack.empty()){
+				Move m = (Move) whiteAttack.pop();
+				Square s = (Square) m.getLanding();
+				if((s.getXC() == x / 75) && (s.getYC() == y / 75)){
+					move = false;
+				}
+			}
+		}
+	}
+
+	resetBorders();
+	layeredPane.validate();
+	layeredPane.repaint();
+	return move;
+}
+
   private void makeAIMove(){
 	/*
 	  When the AI Agent decides on a move, a red border shows the square from where the move started and the
@@ -877,6 +1266,7 @@ private void printStack(Stack input){
 	layeredPane.validate();
 	layeredPane.repaint();
 	Stack white = findWhitePieces();
+	Stack black = findBlackPieces();
 	Stack completeMoves = new Stack();
 	Move tmp;
 	while(!white.empty()){
@@ -888,22 +1278,22 @@ private void printStack(Stack input){
 		  We need to identify all the possible moves that can be made by the AI Opponent
 	  */
 	  if(tmpString.contains("Knight")){
-	    //tmpMoves = getKnightMoves(s.getXC(), s.getYC(), s.getName());
+		tmpMoves = getKnightMoves(s.getXC(), s.getYC(), s.getName());
 	  }
 	  else if(tmpString.contains("Bishop")){
-	    //tmpMoves = getBishopMoves(s.getXC(), s.getYC(), s.getName());
+		tmpMoves = getBishopMoves(s.getXC(), s.getYC(), s.getName());
 	  }
 	  else if(tmpString.contains("Pawn")){
 		  tmpMoves = getWhitePawnSquares(s.getXC(), s.getYC(), s.getName());
 	  }
 	  else if(tmpString.contains("Rook")){
-	    //tmpMoves = getRookMoves(s.getXC(), s.getYC(), s.getName());
+		tmpMoves = getRookMoves(s.getXC(), s.getYC(), s.getName());
 	  }
 	  else if(tmpString.contains("Queen")){
-	    //tmpMoves = getQueenMoves(s.getXC(), s.getYC(), s.getName());
+		tmpMoves = getQueenMoves(s.getXC(), s.getYC(), s.getName());
 	  }
 	  else if(tmpString.contains("King")){
-		//tmpMoves = getKingSquares(s.getXC(), s.getYC(), s.getName());
+		tmpMoves = getKingSquares(s.getXC(), s.getYC(), s.getName());
 	  }
 
 	  while(!tmpMoves.empty()){
@@ -942,6 +1332,7 @@ private void printStack(Stack input){
 		System.out.println("The "+s1.getName()+" can move from ("+s1.getXC()+", "+s1.getYC()+") to the following square: ("+s2.getXC()+", "+s2.getYC()+")");
 		testing.push(tmpMove);
 	  }
+	  if(gameOption == 0){
 	   System.out.println("=============================================================");
 	   Border redBorder = BorderFactory.createLineBorder(Color.RED, 3);
 	   Move selectedMove = agent.randomMove(testing);
@@ -995,6 +1386,120 @@ private void printStack(Stack input){
 		}
 		white2Move = false;
   }
+	  
+	  else if (gameOption == 1){
+		  	   System.out.println("=============================================================");
+	   Border redBorder = BorderFactory.createLineBorder(Color.RED, 3);
+	   Move selectedMove = agent.nextBestMove(testing, black);
+	   Square startingPoint = (Square)selectedMove.getStart();
+	   Square landingPoint = (Square)selectedMove.getLanding();
+	   int startX1 = (startingPoint.getXC()*75)+20;
+	   int startY1 = (startingPoint.getYC()*75)+20;
+	   int landingX1 = (landingPoint.getXC()*75)+20;
+	   int landingY1 = (landingPoint.getYC()*75)+20;
+	   System.out.println("-------- Move "+startingPoint.getName()+" ("+startingPoint.getXC()+", "+startingPoint.getYC()+") to ("+landingPoint.getXC()+", "+landingPoint.getYC()+")");
+
+	   Component c  = (JLabel)chessBoard.findComponentAt(startX1, startY1);
+	   Container parent = c.getParent();
+	   parent.remove(c);
+	   int panelID = (startingPoint.getYC() * 8)+startingPoint.getXC();
+	   panels = (JPanel)chessBoard.getComponent(panelID);
+	   panels.setBorder(redBorder);
+	   parent.validate();
+
+	   Component l = chessBoard.findComponentAt(landingX1, landingY1);
+	   if(l instanceof JLabel){
+		  Container parentlanding = l.getParent();
+		  JLabel awaitingName = (JLabel)l;
+		  String agentCaptured = awaitingName.getIcon().toString();
+		  if(agentCaptured.contains("King")){
+			agentwins = true;
+		  }
+		  parentlanding.remove(l);
+		  parentlanding.validate();
+		  pieces = new JLabel( new ImageIcon(startingPoint.getName()+".png") );
+		  int landingPanelID = (landingPoint.getYC()*8)+landingPoint.getXC();
+		  panels = (JPanel)chessBoard.getComponent(landingPanelID);
+		  panels.add(pieces);
+		  panels.setBorder(redBorder);
+		  layeredPane.validate();
+		  layeredPane.repaint();
+
+		  if(agentwins){
+			JOptionPane.showMessageDialog(null, "The AI Agent has won!");
+			System.exit(0);
+		  }
+		}
+		else{
+		  pieces = new JLabel( new ImageIcon(startingPoint.getName()+".png") );
+		  int landingPanelID = (landingPoint.getYC()*8)+landingPoint.getXC();
+		  panels = (JPanel)chessBoard.getComponent(landingPanelID);
+		  panels.add(pieces);
+		  panels.setBorder(redBorder);
+		  layeredPane.validate();
+		  layeredPane.repaint();
+		}
+		white2Move = false;
+  }
+
+  else if(gameOption == 2){
+	  JOptionPane.showMessageDialog(null, "This section is not completed");
+	  System.exit(0);
+	   System.out.println("=============================================================");
+	   Border redBorder = BorderFactory.createLineBorder(Color.RED, 3);
+	   Move selectedMove = agent.twoLevelsDeep(testing, black);
+	   Square startingPoint = (Square)selectedMove.getStart();
+	   Square landingPoint = (Square)selectedMove.getLanding();
+	   int startX1 = (startingPoint.getXC()*75)+20;
+	   int startY1 = (startingPoint.getYC()*75)+20;
+	   int landingX1 = (landingPoint.getXC()*75)+20;
+	   int landingY1 = (landingPoint.getYC()*75)+20;
+	   System.out.println("-------- Move "+startingPoint.getName()+" ("+startingPoint.getXC()+", "+startingPoint.getYC()+") to ("+landingPoint.getXC()+", "+landingPoint.getYC()+")");
+
+	   Component c  = (JLabel)chessBoard.findComponentAt(startX1, startY1);
+	   Container parent = c.getParent();
+	   parent.remove(c);
+	   int panelID = (startingPoint.getYC() * 8)+startingPoint.getXC();
+	   panels = (JPanel)chessBoard.getComponent(panelID);
+	   panels.setBorder(redBorder);
+	   parent.validate();
+
+	   Component l = chessBoard.findComponentAt(landingX1, landingY1);
+	   if(l instanceof JLabel){
+		  Container parentlanding = l.getParent();
+		  JLabel awaitingName = (JLabel)l;
+		  String agentCaptured = awaitingName.getIcon().toString();
+		  if(agentCaptured.contains("King")){
+			agentwins = true;
+		  }
+		  parentlanding.remove(l);
+		  parentlanding.validate();
+		  pieces = new JLabel( new ImageIcon(startingPoint.getName()+".png") );
+		  int landingPanelID = (landingPoint.getYC()*8)+landingPoint.getXC();
+		  panels = (JPanel)chessBoard.getComponent(landingPanelID);
+		  panels.add(pieces);
+		  panels.setBorder(redBorder);
+		  layeredPane.validate();
+		  layeredPane.repaint();
+
+		  if(agentwins){
+			JOptionPane.showMessageDialog(null, "The AI Agent has won!");
+			System.exit(0);
+		  }
+		}
+		else{
+		  pieces = new JLabel( new ImageIcon(startingPoint.getName()+".png") );
+		  int landingPanelID = (landingPoint.getYC()*8)+landingPoint.getXC();
+		  panels = (JPanel)chessBoard.getComponent(landingPanelID);
+		  panels.add(pieces);
+		  panels.setBorder(redBorder);
+		  layeredPane.validate();
+		  layeredPane.repaint();
+		}
+		white2Move = false;
+  }
+	  }
+
 }
 
   /*
@@ -1802,6 +2307,7 @@ private void printStack(Stack input){
 		Object[] options = {"Random Moves","Best Next Move","Based on Opponents Moves"};
 		int n = JOptionPane.showOptionDialog(frame,"Lets play some Chess, choose your AI opponent","Introduction to AI Continuous Assessment", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE,null,options,options[2]);
 		System.out.println("The selected variable is : "+n);
+		gameOption = n;
 		frame.makeAIMove();
   }
 }
